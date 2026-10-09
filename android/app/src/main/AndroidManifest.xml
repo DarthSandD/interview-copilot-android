@@ -10,10 +10,29 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE"/>
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
+    <!--
+      Hardening notes:
+
+      * allowBackup="false" — interview transcripts and notes must never be
+        copied into a cloud backup or extracted via adb backup. This is the
+        single most important privacy setting in this file.
+
+      * usesCleartextTraffic="false" — the only network call is the HTTPS
+        model download; cleartext is never needed and is refused outright.
+
+      * The app declares no exported components other than the launcher
+        activity, so no other app can drive it.
+    -->
     <application
         android:label="Interview Copilot"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:fullBackupContent="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
